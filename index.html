@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rock Paper Scissors</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        button { font-size: 24px; margin: 10px; padding: 10px 20px; cursor: pointer; }
+        #result { margin-top: 30px; font-size: 24px; }
+    </style>
+</head>
+<body>
+    <h1>Rock Paper Scissors</h1>
+
+    <button onclick="play('r')">🪨 Rock</button>
+    <button onclick="play('p')">🗞️ Paper</button>
+    <button onclick="play('s')">✂️ Scissors</button>
+
+    <div id="result"></div>
+
+    <script>
+        function play(choice) {
+            fetch(`/play?choice=${choice}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById("result").innerHTML = data.error;
+                    } else {
+                        document.getElementById("result").innerHTML =
+                            `You: ${data.you} <br>
+                             Computer: ${data.computer} <br>
+                             Result: ${data.result}`;
+                    }
+                })
+                .catch(err => {
+                    document.getElementById("result").innerHTML = "Error connecting to server.";
+                });
+        }
+    </script>
+</body>
+</html>
+
